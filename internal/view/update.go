@@ -19,44 +19,8 @@ func (m GameModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		}
 
 	case tea.KeyMsg:
-		switch msg.String() {
-
 		case "ctrl+c", "q":
 			return m, tea.Quit
-
-		// history scrubbing
-		case "p", " ":
-			if m.paused {
-				m.paused = false
-				m = m.nextBoard()
-			} else {
-				m.paused = true
-			}
-
-			return m, m.tick()
-		case "r":
-			return m.reset(), nil
-		case "h":
-			return m.lastBoard(), nil
-		case "l":
-			return m.nextBoard(), nil
-
-		// tick manipulation
-		case "k":
-			m.tickRate = m.tickRate - 25
-		case "j":
-			m.tickRate = m.tickRate + 25
-		case "1":
-			m.tickRate = 450
-		case "2":
-			m.tickRate = 400
-		case "3":
-			m.tickRate = 350
-		case "4":
-			m.tickRate = 300
-		case "5":
-			m.tickRate = 250
-		}
 	}
 
 	return m, nil
