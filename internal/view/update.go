@@ -45,6 +45,15 @@ func (m GameModel) updateNormalMode(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "i":
 			m.mode = modeEdit
 			return m, nil
+		case "p":
+			switch m.paused {
+			case true:
+				m.paused = false
+				return m, m.tick()
+			case false:
+				m.paused = true
+				return m, nil
+			}
 		}
 	}
 
@@ -57,7 +66,7 @@ func (m GameModel) updateEditMode(msg tea.Msg) (tea.Model, tea.Cmd) {
 		switch msg.String() {
 		case "esc":
 			m.mode = modeNormal
-			return m, nil
+			return m, m.tick()
 
 		case " ":
 			x := m.cursorPos[0]
