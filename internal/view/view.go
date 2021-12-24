@@ -7,8 +7,8 @@ import (
 
 func (m GameModel) View() string {
 	var sb strings.Builder
-	fmt.Fprint(&sb, m.BoardView())
-	fmt.Fprintf(&sb, "h: %d, w: %d, Hz: %.02f, paused: %t", m.currentBoard.Height, m.currentBoard.Width, 1.00/(float64(m.tickRate)/1000.00), m.paused)
+	fmt.Fprint(&sb, m.boardView())
+	fmt.Fprint(&sb, m.statusBarView())
 
 	return sb.String()
 }
@@ -23,7 +23,7 @@ const (
 	br = "┘"
 )
 
-func (m GameModel) BoardView() string {
+func (m GameModel) boardView() string {
 	b := m.currentBoard
 	// global string builder for the whole board
 	var sb strings.Builder
@@ -62,5 +62,11 @@ func (m GameModel) BoardView() string {
 	// draw the bottom border to the global board builder
 	fmt.Fprintf(&sb, "%s\n", bb.String())
 
+	return sb.String()
+}
+
+func (m GameModel) statusBarView() string {
+	var sb strings.Builder
+	fmt.Fprintf(&sb, "h: %d, w: %d, Hz: %.02f, paused: %t", m.currentBoard.Height, m.currentBoard.Width, 1.00/(float64(m.tickRate)/1000.00), m.paused)
 	return sb.String()
 }
