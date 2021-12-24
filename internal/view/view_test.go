@@ -55,6 +55,7 @@ func TestGameModel_statusBarView(t *testing.T) {
 		currentBoard *cgol.Board
 		paused       bool
 		tickRate     int64
+		mode         mode
 	}
 	tests := []struct {
 		name   string
@@ -62,22 +63,44 @@ func TestGameModel_statusBarView(t *testing.T) {
 		want   string
 	}{
 		{
-			name: "test 1",
+			name: "test not paused",
 			fields: fields{
 				currentBoard: &cgol.Board{Height: 1, Width: 2},
 				paused:       false,
 				tickRate:     int64(250),
+				mode:         modeNormal,
 			},
-			want: "h: 1, w: 2, Hz: 4.00, paused: false",
+			want: "h: 1, w: 2, Hz: 4.00, paused: false, mode: normal",
 		},
 		{
-			name: "test 2",
+			name: "test paused",
 			fields: fields{
 				currentBoard: &cgol.Board{Height: 100, Width: 200},
 				paused:       true,
 				tickRate:     int64(500),
+				mode:         modeNormal,
 			},
-			want: "h: 100, w: 200, Hz: 2.00, paused: true",
+			want: "h: 100, w: 200, Hz: 2.00, paused: true, mode: normal",
+		},
+		{
+			name: "test edit mode",
+			fields: fields{
+				currentBoard: &cgol.Board{Height: 100, Width: 200},
+				paused:       true,
+				tickRate:     int64(500),
+				mode:         modeEdit,
+			},
+			want: "h: 100, w: 200, Hz: 2.00, paused: true, mode: edit",
+		},
+		{
+			name: "test paused",
+			fields: fields{
+				currentBoard: &cgol.Board{Height: 100, Width: 200},
+				paused:       true,
+				tickRate:     int64(500),
+				mode:         modeNormal,
+			},
+			want: "h: 100, w: 200, Hz: 2.00, paused: true, mode: normal",
 		},
 	}
 	for _, tt := range tests {
@@ -86,6 +109,7 @@ func TestGameModel_statusBarView(t *testing.T) {
 				currentBoard: tt.fields.currentBoard,
 				paused:       tt.fields.paused,
 				tickRate:     tt.fields.tickRate,
+				mode:         tt.fields.mode,
 			}
 			if got := m.statusBarView(); got != tt.want {
 				t.Errorf("GameModel.statusBarView() = %v, want %v", got, tt.want)

@@ -9,18 +9,47 @@ import (
 type tickMsg time.Time
 
 func (m GameModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
-	switch msg := msg.(type) {
+	switch m.mode {
+	case modeNormal:
+		return m.updateNormalMode(msg)
+	case modeEdit:
+		return m.updateEditMode(msg)
+	}
 
+	return m, nil
+}
+
+func (m GameModel) updateNormalMode(msg tea.Msg) (tea.Model, tea.Cmd) {
+	switch msg := msg.(type) {
 	case tickMsg:
-		if m.paused {
+		switch m.paused {
+		case true:
 			return m, nil
-		} else {
+		case false:
 			return m.nextBoard(), m.tick()
 		}
 
 	case tea.KeyMsg:
+		switch msg.String() {
 		case "ctrl+c", "q":
 			return m, tea.Quit
+		case "i":
+			m.mode = modeEdit
+			return m, nil
+		}
+	}
+
+	return m, nil
+}
+
+func (m GameModel) updateEditMode(msg tea.Msg) (tea.Model, tea.Cmd) {
+	switch msg := msg.(type) {
+	case tea.KeyMsg:
+		switch msg.String() {
+		case "esc":
+			m.mode = modeNormal
+			return m, nil
+		}
 	}
 
 	return m, nil

@@ -67,6 +67,14 @@ func (m GameModel) boardView() string {
 
 func (m GameModel) statusBarView() string {
 	var sb strings.Builder
-	fmt.Fprintf(&sb, "h: %d, w: %d, Hz: %.02f, paused: %t", m.currentBoard.Height, m.currentBoard.Width, 1.00/(float64(m.tickRate)/1000.00), m.paused)
+	fmt.Fprintf(
+		&sb,
+		"h: %d, w: %d, Hz: %.02f, paused: %t, mode: %s",
+		m.currentBoard.Height,
+		m.currentBoard.Width,
+		1.00/(float64(m.tickRate)/1000.00),
+		m.paused,
+		m.mode,
+	)
 	return sb.String()
 }
