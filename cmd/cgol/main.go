@@ -13,7 +13,7 @@ func main() {
 	fmt.Print("\033[H\033[2J")
 
 	w, h, _ := term.GetSize(1)
-	m := view.InitialModel(w/2-2, h-4) // I have no idea why width needs to be divided by 2
+	m := view.InitialModel(w/2-2, h-4)
 
 	p := tea.NewProgram(m)
 	if err := p.Start(); err != nil {
