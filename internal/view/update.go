@@ -131,7 +131,11 @@ func (m GameModel) updateEditMode(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m, nil
 		case "$":
 			m.cursorPos[0] = m.currentBoard.Width - 1
+
+		case "1":
+			m.currentBoard.PutGliderAt(m.cursorPos[0], m.cursorPos[1])
 		}
+
 	}
 
 	return m, nil
