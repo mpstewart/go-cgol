@@ -4,11 +4,11 @@ import (
 	"fmt"
 )
 
-type CellState string
+type CellState int
 
 const (
-	CellStateAlive CellState = "o"
-	CellStateDead  CellState = " "
+	CellStateDead CellState = iota
+	CellStateAlive
 )
 
 type Cell struct {

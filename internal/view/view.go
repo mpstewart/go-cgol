@@ -3,6 +3,8 @@ package view
 import (
 	"fmt"
 	"strings"
+
+	"github.com/mpstewart/go-cgol/internal/cgol"
 )
 
 func (m GameModel) View() string {
@@ -22,6 +24,8 @@ const (
 	bl = "└"
 	br = "┘"
 	ws = "□"
+	bs = "■"
+	ac = "▣"
 )
 
 func (m GameModel) boardView() string {
@@ -51,11 +55,21 @@ func (m GameModel) boardView() string {
 		// draw a vertical border at the start of each new row
 		fmt.Fprintf(&sb, "%s ", v)
 		for x := 0; x < b.Width; x += 1 {
-			if m.mode == modeEdit && x == m.cursorPos[0] && y == m.cursorPos[1] {
-				fmt.Fprintf(&sb, "%s ", ws)
-			} else if cell := b.GetCellAt(x, y); cell != nil {
-				fmt.Fprintf(&sb, "%s ", cell.State)
+			char := " "
+
+			editingHere := m.mode == modeEdit && m.cursorPos[0] == x && m.cursorPos[1] == y
+			cellHere := b.GetCellAt(x, y).State == cgol.CellStateAlive
+
+			if cellHere {
+				char = bs
+				if editingHere {
+					char = ac
+				}
+			} else if editingHere {
+				char = ws
 			}
+
+			fmt.Fprintf(&sb, "%s ", char)
 		}
 
 		// draw a vertical border at the end of each new row

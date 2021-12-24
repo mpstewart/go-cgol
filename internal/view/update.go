@@ -4,6 +4,7 @@ import (
 	"time"
 
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/mpstewart/go-cgol/internal/cgol"
 )
 
 type tickMsg time.Time
@@ -57,6 +58,18 @@ func (m GameModel) updateEditMode(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "esc":
 			m.mode = modeNormal
 			return m, nil
+
+		case " ":
+			x := m.cursorPos[0]
+			y := m.cursorPos[1]
+			c := m.currentBoard.GetCellAt(x, y)
+			switch c.State {
+			case cgol.CellStateAlive:
+				c.State = cgol.CellStateDead
+			case cgol.CellStateDead:
+				c.State = cgol.CellStateAlive
+			}
+
 		case "g":
 			m.cursorPos[1] = 0
 		case "j":
