@@ -1,20 +1,5 @@
 package cgol
 
-import (
-	"fmt"
-)
-
-type CellState int
-
-const (
-	CellStateDead CellState = iota
-	CellStateAlive
-)
-
-type Cell struct {
-	State CellState
-}
-
 type Board struct {
 	Height int
 	Width  int
@@ -36,8 +21,6 @@ func NewBoard(width, height int) *Board {
 	newBoard.Height = height
 	newBoard.Width = width
 	newBoard.Cells = cells
-
-	// fmt.Printf("%+v", newBoard)
 
 	return newBoard
 }
@@ -116,51 +99,3 @@ func (b *Board) DoForEachCell(f func(int, int, *Cell)) {
 		}
 	}
 }
-
-func (b *Board) PutGliderAt(x, y int) {
-	if tl := b.GetCellAt(x, y); tl == nil {
-		panic(
-			fmt.Sprintf("could not place glider at %d, %d, not a point on the board", x, y),
-		)
-	}
-	b.GetCellAt(x+1, y+0).State = CellStateAlive
-	b.GetCellAt(x+2, y+1).State = CellStateAlive
-	b.GetCellAt(x+0, y+2).State = CellStateAlive
-	b.GetCellAt(x+1, y+2).State = CellStateAlive
-	b.GetCellAt(x+2, y+2).State = CellStateAlive
-
-}
-
-func (b *Board) PutSquareAt(x, y int) {
-	if tl := b.GetCellAt(x, y); tl == nil {
-		panic(
-			fmt.Sprintf("could not put square at %d, %d, not a point on the board", x, y),
-		)
-	}
-	b.GetCellAt(x, y).State = CellStateAlive
-	b.GetCellAt(x+1, y).State = CellStateAlive
-	b.GetCellAt(x, y+1).State = CellStateAlive
-	b.GetCellAt(x+1, y+1).State = CellStateAlive
-}
-
-func (b *Board) PutLightweightSpaceShip(x, y int) {
-	if tl := b.GetCellAt(x, y); tl == nil {
-		panic(
-			fmt.Sprintf("could not put lwss at %d, %d, not a point on the board", x, y),
-		)
-	}
-	b.GetCellAt(x+1, y).State = CellStateAlive
-	b.GetCellAt(x+4, y).State = CellStateAlive
-	b.GetCellAt(x, y+1).State = CellStateAlive
-	b.GetCellAt(x, y+2).State = CellStateAlive
-	b.GetCellAt(x, y+3).State = CellStateAlive
-	b.GetCellAt(x+4, y+2).State = CellStateAlive
-	b.GetCellAt(x+1, y+3).State = CellStateAlive
-	b.GetCellAt(x+2, y+3).State = CellStateAlive
-	b.GetCellAt(x+3, y+3).State = CellStateAlive
-
-}
-
-//   x     x
-//     x   x   x
-// x x x   x x
