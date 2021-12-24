@@ -9,6 +9,14 @@ import (
 type tickMsg time.Time
 
 func (m GameModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+	switch msg := msg.(type) {
+	case tea.KeyMsg:
+		switch msg.String() {
+		case "ctrl+c", "q":
+			return m, tea.Quit
+		}
+	}
+
 	switch m.mode {
 	case modeNormal:
 		return m.updateNormalMode(msg)
