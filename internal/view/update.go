@@ -57,6 +57,64 @@ func (m GameModel) updateEditMode(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "esc":
 			m.mode = modeNormal
 			return m, nil
+		case "g":
+			m.cursorPos[1] = 0
+		case "j":
+			if m.cursorPos[1] < m.currentBoard.Height-1 {
+				m.cursorPos[1] += 1
+			}
+			return m, nil
+		case "J":
+			for i := 0; i < 5; i += 1 {
+				if m.cursorPos[1] < m.currentBoard.Height-1 {
+					m.cursorPos[1] += 1
+				}
+			}
+			return m, nil
+		case "k":
+			if m.cursorPos[1] > 0 {
+				m.cursorPos[1] -= 1
+			}
+			return m, nil
+		case "K":
+			for i := 0; i < 5; i += 1 {
+				if m.cursorPos[1] > 0 {
+					m.cursorPos[1] -= 1
+				}
+			}
+			return m, nil
+		case "G":
+			m.cursorPos[1] = m.currentBoard.Height - 1
+			return m, nil
+
+		case "0":
+			m.cursorPos[0] = 0
+		case "h":
+			if m.cursorPos[0] > 0 {
+				m.cursorPos[0] -= 1
+			}
+			return m, nil
+		case "H":
+			for i := 0; i < 5; i += 1 {
+				if m.cursorPos[0] > 0 {
+					m.cursorPos[0] -= 1
+				}
+			}
+			return m, nil
+		case "l":
+			if m.cursorPos[0] < m.currentBoard.Width-1 {
+				m.cursorPos[0] += 1
+			}
+			return m, nil
+		case "L":
+			for i := 0; i < 5; i += 1 {
+				if m.cursorPos[0] < m.currentBoard.Width-1 {
+					m.cursorPos[0] += 1
+				}
+			}
+			return m, nil
+		case "$":
+			m.cursorPos[0] = m.currentBoard.Width - 1
 		}
 	}
 

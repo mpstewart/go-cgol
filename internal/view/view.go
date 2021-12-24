@@ -21,6 +21,7 @@ const (
 	v  = "│"
 	bl = "└"
 	br = "┘"
+	ws = "□"
 )
 
 func (m GameModel) boardView() string {
@@ -50,7 +51,9 @@ func (m GameModel) boardView() string {
 		// draw a vertical border at the start of each new row
 		fmt.Fprintf(&sb, "%s ", v)
 		for x := 0; x < b.Width; x += 1 {
-			if cell := b.GetCellAt(x, y); cell != nil {
+			if m.mode == modeEdit && x == m.cursorPos[0] && y == m.cursorPos[1] {
+				fmt.Fprintf(&sb, "%s ", ws)
+			} else if cell := b.GetCellAt(x, y); cell != nil {
 				fmt.Fprintf(&sb, "%s ", cell.State)
 			}
 		}

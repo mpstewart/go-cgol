@@ -18,6 +18,7 @@ type GameModel struct {
 	paused       bool
 	tickRate     int64
 	mode         mode
+	cursorPos    []int
 }
 
 func InitialModel(x, y int) GameModel {
@@ -27,6 +28,7 @@ func InitialModel(x, y int) GameModel {
 	p := false
 	tr := int64(250)
 	mode := modeEdit
+	cp := []int{0, 0}
 
 	m := GameModel{
 		currentBoard: cb,
@@ -34,6 +36,7 @@ func InitialModel(x, y int) GameModel {
 		paused:       p,
 		tickRate:     tr,
 		mode:         mode,
+		cursorPos:    cp,
 	}
 
 	return m

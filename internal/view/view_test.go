@@ -21,19 +21,45 @@ func TestGameModel_View(t *testing.T) {
 }
 
 func TestGameModel_boardView(t *testing.T) {
-	m := InitialModel(2, 2)
-	got := m.boardView()
-	want := fmt.Sprintf("%s\n%s\n%s\n%s\n",
+	var m GameModel
+	var got string
+	var want string
+	check := func() {
+		if got != want {
+			t.Errorf("Board looks wrong")
+			t.Logf("Got:\n%s", got)
+			t.Logf("Want:\n%s", want)
+		}
+	}
+	m = InitialModel(2, 2)
+	got = m.boardView()
+	want = fmt.Sprintf("%s\n%s\n%s\n%s\n",
 		"┌─────┐",
-		"│     │",
+		"│ □   │",
 		"│     │",
 		"└─────┘",
 	)
-	if got != want {
-		t.Errorf("Board looks wrong")
-		t.Logf("Got:\n%s", got)
-		t.Logf("Want:\n%s", want)
-	}
+	check()
+
+	m.currentBoard.GetCellAt(0, 0).VivifyCell()
+	got = m.boardView()
+	want = fmt.Sprintf("%s\n%s\n%s\n%s\n",
+		"┌─────┐",
+		"│ ▣   │",
+		"│     │",
+		"└─────┘",
+	)
+	check()
+
+	m.cursorPos[0] += 1
+	got = m.boardView()
+	want = fmt.Sprintf("%s\n%s\n%s\n%s\n",
+		"┌─────┐",
+		"│ ■ □ │",
+		"│     │",
+		"└─────┘",
+	)
+	check()
 }
 
 func MustView(name string, t *testing.T, fn func() string) string {
